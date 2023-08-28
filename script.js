@@ -6,13 +6,24 @@ const displayBot = document.querySelector('.display-bot');
 
 let firstNumber = '';
 let secondNumber = '';
-let total = 0;
+let total = '';
 let operator = '';
 
 operatorButtons.forEach(operatorButton => {
     operatorButton.addEventListener('click', function () {
-        operator = operatorButton.textContent;
-        updateDisplayBot();
+        if (operator == '') {
+            operator = operatorButton.textContent;
+            updateDisplayTop();
+        }
+        else if (operator != '') {
+            clearDisplayTop();
+            firstNumber = total;
+            secondNumber = '';
+            operator = operatorButton.textContent;
+
+            // updateDisplayTop();
+        }
+
     })
 })
 
@@ -20,10 +31,10 @@ numberButtons.forEach(numberButton => {
     numberButton.addEventListener('click', function () {
         if (operator == '') {
             firstNumber += numberButton.textContent;
-            updateDisplayBot()
+            updateDisplayTop()
         } else if (operator != '') {
             secondNumber += numberButton.textContent;
-            updateDisplayBot()
+            updateDisplayTop()
 
         }
 
@@ -35,19 +46,19 @@ equals.addEventListener('click', operate);
 function operate() {
     if (operator == '+') {
         add();
-        updateDisplayTop();
+        updateDisplayBot();
     }
     else if (operator == '-') {
         subtract();
-        updateDisplayTop();
+        updateDisplayBot();
     }
     else if (operator == '*') {
         multiply();
-        updateDisplayTop();
+        updateDisplayBot();
     }
     else if (operator == '/') {
         divide();
-        updateDisplayTop();
+        updateDisplayBot();
     }
 
 };
@@ -69,9 +80,17 @@ function divide() {
 }
 
 function updateDisplayTop() {
-    displayTop.innerText = " = " + total;
+    displayTop.innerText = firstNumber + operator + secondNumber;
 };
 
 function updateDisplayBot() {
-    displayBot.innerText = firstNumber + operator + secondNumber;
+    displayBot.innerText = total;
 };
+
+function clearDisplayTop() {
+    displayTop.innerText = '';
+}
+
+function clearDisplayBot() {
+    displayBot.innerText = '';
+}
