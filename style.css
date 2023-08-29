@@ -11,6 +11,7 @@ html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 430px;
     gap: 10px;
 }
 
@@ -33,4 +34,9 @@ html {
     grid-template-columns: repeat(4, 100px);
     gap: 10px;
     width: 100%;
+}
+
+.clear,
+.delete {
+    grid-column: span 2;
 }
