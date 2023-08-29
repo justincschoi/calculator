@@ -4,11 +4,14 @@ const equals = document.querySelector('.equals');
 const displayTop = document.querySelector('.display-top');
 const displayBot = document.querySelector('.display-bot');
 const decimalButton = document.getElementById('decimal');
+const clearButton = document.querySelector('.clear');
+const deleteButton = document.querySelector('.delete');
 
 let firstNumber = '';
 let secondNumber = '';
 let total = '';
 let operator = '';
+let currentInput = '';
 
 operatorButtons.forEach(operatorButton => {
     operatorButton.addEventListener('click', function () {
@@ -16,7 +19,7 @@ operatorButtons.forEach(operatorButton => {
             operator = operatorButton.textContent;
             updateDisplayTop();
         }
-        else if (operator != '') {
+        else {
             firstNumber = total;
             secondNumber = '';
             operator = operatorButton.textContent;
@@ -36,7 +39,8 @@ numberButtons.forEach(numberButton => {
                 decimalButton.disabled = false;
             }
             updateDisplayTop();
-        } else if (operator != '') {
+        }
+        else {
             secondNumber += numberButton.textContent;
             if (secondNumber.includes('.')) {
                 decimalButton.disabled = true;
@@ -49,6 +53,8 @@ numberButtons.forEach(numberButton => {
 });
 
 equals.addEventListener('click', operate);
+clearButton.addEventListener('click', clear);
+deleteButton.addEventListener('click', undo);
 
 function operate() {
     if (operator == '+') {
@@ -67,7 +73,6 @@ function operate() {
         divide();
         updateDisplayBot();
     }
-
 };
 
 function add() {
@@ -98,10 +103,27 @@ function updateDisplayBot() {
     displayBot.innerText = total;
 };
 
-function clearDisplayTop() {
+function clear() {
     displayTop.innerText = '';
+    displayBot.innerText = '';
+    firstNumber = '';
+    secondNumber = '';
+    total = '';
+    operator = '';
 }
 
-function clearDisplayBot() {
-    displayBot.innerText = '';
+function undo() {
+    if (operator === '' && firstNumber !== '') {
+        firstNumber = firstNumber.slice(0, -1);
+    } else if (operator !== '' && secondNumber !== '') {
+        secondNumber = secondNumber.slice(0, -1);
+    } else if (operator !== '') {
+        operator = '';
+    }
+
+    if (total !== '') {
+        total = '';
+        updateDisplayBot();
+    }
+    updateDisplayTop();
 }
