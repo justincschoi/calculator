@@ -3,6 +3,7 @@ const operatorButtons = document.querySelectorAll('.operator');
 const equals = document.querySelector('.equals');
 const displayTop = document.querySelector('.display-top');
 const displayBot = document.querySelector('.display-bot');
+const decimalButton = document.getElementById('decimal');
 
 let firstNumber = '';
 let secondNumber = '';
@@ -16,12 +17,10 @@ operatorButtons.forEach(operatorButton => {
             updateDisplayTop();
         }
         else if (operator != '') {
-            clearDisplayTop();
             firstNumber = total;
             secondNumber = '';
             operator = operatorButton.textContent;
-
-            // updateDisplayTop();
+            updateDisplayTop();
         }
 
     })
@@ -31,15 +30,23 @@ numberButtons.forEach(numberButton => {
     numberButton.addEventListener('click', function () {
         if (operator == '') {
             firstNumber += numberButton.textContent;
-            updateDisplayTop()
+            if (firstNumber.includes('.')) {
+                decimalButton.disabled = true;
+            } else {
+                decimalButton.disabled = false;
+            }
+            updateDisplayTop();
         } else if (operator != '') {
             secondNumber += numberButton.textContent;
-            updateDisplayTop()
-
+            if (secondNumber.includes('.')) {
+                decimalButton.disabled = true;
+            } else {
+                decimalButton.disabled = false;
+            }
+            updateDisplayTop();
         }
-
-    })
-})
+    });
+});
 
 equals.addEventListener('click', operate);
 
@@ -80,7 +87,11 @@ function divide() {
 }
 
 function updateDisplayTop() {
-    displayTop.innerText = firstNumber + operator + secondNumber;
+    if (total !== '') {
+        displayTop.innerText = 'ANS ' + operator + secondNumber;
+    } else {
+        displayTop.innerText = firstNumber + operator + secondNumber;
+    }
 };
 
 function updateDisplayBot() {
